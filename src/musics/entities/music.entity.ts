@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { File } from '../../files/entities/file.entity';
 
 @Entity()
 export class Music {
@@ -7,4 +8,10 @@ export class Music {
 
   @Column()
   public title: string;
+
+  @OneToOne((type) => File, {
+    eager: true
+  })
+  @JoinColumn()
+  public file: File
 }

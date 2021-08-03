@@ -1,4 +1,12 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateMusicDto } from './create-music.dto';
+import { IsEmpty, IsNotEmpty, IsOptional, IsString, MinLength } from 'class-validator';
 
-export class UpdateMusicDto extends PartialType(CreateMusicDto) {}
+export class UpdateMusicDto {
+  @IsString()
+  @IsNotEmpty()
+  @MinLength(5)
+  @IsOptional()
+  title: string;
+
+  @IsEmpty()
+  file?: undefined;
+}

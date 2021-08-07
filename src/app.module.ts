@@ -10,6 +10,8 @@ import { FilesModule } from './files/files.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { CategoriesModule } from './categories/categories.module';
+import { PasswordRecoveryModule } from './password-recovery/password-recovery.module';
+import { EmailConfirmationModule } from './emailConfirmation/emailConfirmation.module';
 
 @Module({
   imports: [
@@ -41,7 +43,8 @@ import { CategoriesModule } from './categories/categories.module';
     AuthenticationModule,
     PlaylistsModule,
     FilesModule,
-    CategoriesModule
+    CategoriesModule,
+    PasswordRecoveryModule
   ]
 })
 export class AppModule {}

@@ -41,4 +41,10 @@ export class UsersService {
       isEmailConfirmed: true
     });
   }
+
+  async updatePassword(email: string, newPassword) {
+    const user = await this.usersRepository.findOne({ email });
+    user.password = newPassword;
+    return await this.usersRepository.save(user);
+  }
 }

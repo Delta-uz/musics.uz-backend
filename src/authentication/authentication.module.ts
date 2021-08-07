@@ -8,13 +8,13 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtStrategy } from './jwt.strategy';
 import { EmailModule } from '../email/email.module';
-import { EmailConfirmationModule } from '../email/emailConfirmation.module';
+import { EmailConfirmationModule } from '../emailConfirmation/emailConfirmation.module';
 
 @Module({
   imports: [
     ConfigModule,
     JwtModule.registerAsync({
-      imports: [ConfigModule, EmailModule, EmailConfirmationModule],
+      imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
         secret: configService.get('JWT_SECRET'),
@@ -23,6 +23,8 @@ import { EmailConfirmationModule } from '../email/emailConfirmation.module';
         }
       })
     }),
+    EmailModule,
+    EmailConfirmationModule,
     UsersModule,
     PassportModule
   ],

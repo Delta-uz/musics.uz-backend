@@ -16,7 +16,7 @@ import RequestWithUser from './requestWithUser.interface';
 import { LocalAuthenticationGuard } from './localAuthentication.guard';
 import JwtAuthenticationGuard from './jwt-authentication.guard';
 import { UsersService } from '../users/users.service';
-import { EmailConfirmationService } from '../email/emailConfirmation.service';
+import { EmailConfirmationService } from '../emailConfirmation/emailConfirmation.service';
 
 @Controller('authentication')
 @UseInterceptors(ClassSerializerInterceptor )

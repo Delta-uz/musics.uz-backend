@@ -31,7 +31,9 @@ import { EmailConfirmationModule } from './emailConfirmation/emailConfirmation.m
         EMAIL_PASSWORD: Joi.string().required(),
         JWT_VERIFICATION_TOKEN_SECRET: Joi.string().required(),
         JWT_VERIFICATION_TOKEN_EXPIRATION_TIME: Joi.string().required(),
-        EMAIL_CONFIRMATION_URL: Joi.string().required()
+        EMAIL_CONFIRMATION_URL: Joi.string().required(),
+        JWT_RECOVERY_SECRET: Joi.string().required(),
+        JWT_RECOVERY_EXPIRATION_TIME: Joi.string().required()
       })
     }),
     ServeStaticModule.forRoot({

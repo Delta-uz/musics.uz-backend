@@ -9,6 +9,7 @@ import { PlaylistsModule } from './playlists/playlists.module';
 import { FilesModule } from './files/files.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { CategoriesModule } from './categories/categories.module';
 
 @Module({
   imports: [
@@ -22,7 +23,13 @@ import { join } from 'path';
         PORT: Joi.number(),
         JWT_SECRET: Joi.string().required(),
         JWT_EXPIRATION_TIME: Joi.string().required(),
-        UPLOADS_PATH: Joi.string().required()
+        UPLOADS_PATH: Joi.string().required(),
+        EMAIL_SERVICE: Joi.string().required(),
+        EMAIL_USER: Joi.string().required(),
+        EMAIL_PASSWORD: Joi.string().required(),
+        JWT_VERIFICATION_TOKEN_SECRET: Joi.string().required(),
+        JWT_VERIFICATION_TOKEN_EXPIRATION_TIME: Joi.string().required(),
+        EMAIL_CONFIRMATION_URL: Joi.string().required()
       })
     }),
     ServeStaticModule.forRoot({
@@ -33,7 +40,8 @@ import { join } from 'path';
     UsersModule,
     AuthenticationModule,
     PlaylistsModule,
-    FilesModule
+    FilesModule,
+    CategoriesModule
   ]
 })
 export class AppModule {}

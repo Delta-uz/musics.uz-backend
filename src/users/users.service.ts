@@ -35,4 +35,10 @@ export class UsersService {
     newUser.password = undefined;
     return newUser;
   }
+
+  async markEmailAsConfirmed(email: string) {
+    return this.usersRepository.update({ email }, {
+      isEmailConfirmed: true
+    });
+  }
 }

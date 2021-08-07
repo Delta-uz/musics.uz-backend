@@ -8,7 +8,7 @@ import {
   Delete,
   UseGuards,
   UseInterceptors,
-  UploadedFile, BadRequestException,
+  UploadedFile, BadRequestException, Put,
 } from '@nestjs/common';
 import { MusicsService } from './musics.service';
 import { CreateMusicDto } from './dto/create-music.dto';
@@ -18,6 +18,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { Express } from 'express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
+import { AddCategoryDto } from './dto/add-category.dto';
 
 @Controller('musics')
 export class MusicsController {
@@ -27,6 +28,11 @@ export class MusicsController {
   @UseGuards(JwtAuthenticationGuard)
   create(@Body() createMusicDto: CreateMusicDto) {
     return this.musicsService.create(createMusicDto);
+  }
+
+  @Post(':id/category')
+  addCategory(@Param('id') id: string, @Body() addCategoryDto: AddCategoryDto) {
+    return this.musicsService.addCategory(+id, addCategoryDto);
   }
 
   @Get()

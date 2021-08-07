@@ -17,6 +17,9 @@ export class User {
   @Exclude()
   public password: string;
 
+  @Column({ default: false })
+  public isEmailConfirmed: boolean;
+
   @OneToMany(() => Playlist, playlist => playlist.owner)
   public playlists: Playlist[]
 }

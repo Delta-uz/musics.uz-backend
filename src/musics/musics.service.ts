@@ -5,13 +5,16 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Music } from './entities/music.entity';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { FilesService } from '../files/files.service';
+import { CategoriesService } from '../categories/categories.service';
+import { AddCategoryDto } from './dto/add-category.dto';
 
 @Injectable()
 export class MusicsService {
   constructor(
     @InjectRepository(Music)
     private readonly musicsRepository: Repository<Music>,
-    private readonly filesService: FilesService
+    private readonly filesService: FilesService,
+    private readonly categoriesService: CategoriesService
   ) {}
 
   async create(createMusicDto: CreateMusicDto): Promise<Music> {
@@ -28,11 +31,18 @@ export class MusicsService {
   }
 
   async findOne(id: number): Promise<Music> {
-    const music: Music = await this.musicsRepository.findOne(id);
+    const music: Music = await this.musicsRepository.findOne(id, { relations: ['categories'] });
     if(music) {
       return music;
     }
     throw new NotFoundException();
+  }
+
+  async addCategory(id: number, addCategoryDto: AddCategoryDto): Promise<Music> {
+    const music = await this.findOne(id);
+    const category = await this.categoriesService.findOne(addCategoryDto.categoryId);
+    music.categories.push(category);
+    return this.musicsRepository.save(music);
   }
 
   async update(id: number, { title }: UpdateMusicDto): Promise<Music> {

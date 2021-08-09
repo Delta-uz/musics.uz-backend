@@ -41,3 +41,5 @@ lerna-debug.log*
 
 #Uploaded files
 /public/uploads/
+
+package-lock.json

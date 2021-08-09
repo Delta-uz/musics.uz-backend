@@ -20,6 +20,6 @@ export class User {
   @Column({ default: false })
   public isEmailConfirmed: boolean;
 
-  @OneToMany(() => Playlist, playlist => playlist.owner)
+  @OneToMany((type) => Playlist, playlist => playlist.owner)
   public playlists: Playlist[]
 }

@@ -10,10 +10,10 @@ export class Playlist {
   @Column()
   title: string;
 
-  @ManyToMany(() => Music)
+  @ManyToMany((type) => Music)
   @JoinTable()
   public musics: Music[];
 
-  @ManyToOne(() => User, user => user.playlists)
+  @ManyToOne((type) => User, user => user.playlists)
   public owner: User;
 }

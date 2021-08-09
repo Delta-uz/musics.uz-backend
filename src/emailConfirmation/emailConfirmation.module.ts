@@ -4,6 +4,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { EmailModule } from '../email/email.module';
 import { JwtModule } from '@nestjs/jwt';
 import { UsersModule } from '../users/users.module';
+import { EmailConfirmationController } from './emailConfirmation.controller';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { UsersModule } from '../users/users.module';
     UsersModule
   ],
   providers: [EmailConfirmationService],
+  controllers: [EmailConfirmationController],
   exports: [EmailConfirmationService]
 })
 export class EmailConfirmationModule {}

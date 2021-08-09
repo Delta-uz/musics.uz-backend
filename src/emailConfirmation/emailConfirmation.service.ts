@@ -34,7 +34,7 @@ export class EmailConfirmationService {
     if (user.isEmailConfirmed) {
       throw new BadRequestException('Email is already confirmed');
     }
-    await this.usersService.markEmailAsConfirmed(email);
+    return await this.usersService.markEmailAsConfirmed(email);
   }
 
   public async decodeConfirmationToken(token: string) {

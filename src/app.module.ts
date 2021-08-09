@@ -46,6 +46,7 @@ import { EmailConfirmationModule } from './emailConfirmation/emailConfirmation.m
     PlaylistsModule,
     FilesModule,
     CategoriesModule,
+    EmailConfirmationModule,
     PasswordRecoveryModule
   ]
 })

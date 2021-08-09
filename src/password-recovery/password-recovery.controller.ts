@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { PasswordRecoveryService } from './password-recovery.service';
 import RecoveryEmailDto from './dto/recovery-email.dto';
 import RecoveryTokenDto from './dto/recovery-token.dto';
@@ -11,8 +11,9 @@ export class PasswordRecoveryController {
   ) {}
 
   @Post('forgot')
-  forgotPassword(@Body() recoveryData: RecoveryEmailDto) {
-    return this.passwordRecoveryService.sendRecoveryLink(recoveryData.email);
+  @HttpCode(HttpStatus.OK)
+  async forgotPassword(@Body() recoveryData: RecoveryEmailDto) {
+    await this.passwordRecoveryService.sendRecoveryLink(recoveryData.email);
   }
 
   @Post('confirm')

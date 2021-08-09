@@ -18,13 +18,13 @@ export class PasswordRecoveryService {
     const payload: VerificationTokenPayload = { email };
     const token = this.jwtService.sign(payload);
 
-    const url = `${this.configService.get('EMAIL_CONFIRMATION_URL')}?token=${token}`;
+    const url = `${this.configService.get('PASSWORD_RECOVERY_URL')}?token=${token}`;
 
     const text = `Please click the link below to set a new password for your account: ${url}`;
 
     return this.emailService.sendMail({
       to: email,
-      subject: 'Email Confirmation',
+      subject: 'Password recovery',
       text
     });
   }

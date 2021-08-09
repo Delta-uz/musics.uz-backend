@@ -1,4 +1,13 @@
-import { Body, ClassSerializerInterceptor, Controller, Post, Req, UseGuards, UseInterceptors } from '@nestjs/common';
+import {
+  Body,
+  ClassSerializerInterceptor,
+  Controller,
+  Get, HttpCode, HttpStatus,
+  Post,
+  Req,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
 import { EmailConfirmationService } from './emailConfirmation.service';
 import ConfirmEmailDto from './dto/confirmEmail.dto';
 import JwtAuthenticationGuard from '../authentication/jwt-authentication.guard';
@@ -17,8 +26,9 @@ export class EmailConfirmationController {
   }
 
   @Post('confirm')
+  @HttpCode(HttpStatus.OK)
   async confirm(@Body() confirmationData: ConfirmEmailDto) {
     const email = await this.emailConfirmationService.decodeConfirmationToken(confirmationData.token);
-    await this.emailConfirmationService.confirmEmail(email);
+    return await this.emailConfirmationService.confirmEmail(email);
   }
 }

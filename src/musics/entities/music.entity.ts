@@ -10,7 +10,7 @@ export class Music {
   @Column()
   public title: string;
 
-  @OneToOne((type) => File, {
+  @OneToOne((type) => File, file => file.music, {
     eager: true
   })
   @JoinColumn()

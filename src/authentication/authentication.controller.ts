@@ -17,7 +17,16 @@ import { LocalAuthenticationGuard } from './localAuthentication.guard';
 import JwtAuthenticationGuard from './jwt-authentication.guard';
 import { UsersService } from '../users/users.service';
 import { EmailConfirmationService } from '../emailConfirmation/emailConfirmation.service';
+import {
+  ApiBadRequestResponse, ApiBody,
+  ApiCookieAuth, ApiCreatedResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse, ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
+import { LoginDto } from './dto/login.dto';
 
+@ApiTags('authentication')
 @Controller('authentication')
 @UseInterceptors(ClassSerializerInterceptor )
 export class AuthenticationController {
@@ -28,6 +37,12 @@ export class AuthenticationController {
   ) {}
 
   @Post('register')
+  @ApiCreatedResponse({
+    description: 'Registration completed'
+  })
+  @ApiBadRequestResponse({
+    description: 'Registration data does not match the requirements'
+  })
   async register(@Body() registrationData: RegisterDto) {
     const user = this.authenticationService.register(registrationData);
     await this.emailConfirmationService.sendVerificationLink(registrationData.email);
@@ -36,6 +51,21 @@ export class AuthenticationController {
 
   @HttpCode(200)
   @UseGuards(LocalAuthenticationGuard)
+  @ApiUnauthorizedResponse({
+    description: 'User must be authenticated'
+  })
+  @ApiOkResponse({
+    description: 'Logged in'
+  })
+  @ApiNotFoundResponse({
+    description: 'Unable to find that user'
+  })
+  @ApiBadRequestResponse({
+    description: 'Wrong credentials provided'
+  })
+  @ApiBody({
+    type: LoginDto
+  })
   @Post('login')
   async login(@Req() request: RequestWithUser) {
     const { user } = request;
@@ -44,7 +74,15 @@ export class AuthenticationController {
     return user;
   }
 
+  @HttpCode(HttpStatus.OK)
   @UseGuards(JwtAuthenticationGuard)
+  @ApiCookieAuth()
+  @ApiUnauthorizedResponse({
+    description: 'User must be authenticated'
+  })
+  @ApiOkResponse({
+    description: 'Logged out'
+  })
   @Post('logout')
   async logout(@Req() request: RequestWithUser) {
     request.res.setHeader('Set-Cookie', this.authenticationService.getCookieForLogOut());
@@ -52,6 +90,13 @@ export class AuthenticationController {
   }
 
   @UseGuards(JwtAuthenticationGuard)
+  @ApiCookieAuth()
+  @ApiUnauthorizedResponse({
+    description: 'User must be authenticated'
+  })
+  @ApiOkResponse({
+    description: 'User is authenticated'
+  })
   @Get()
   authenticate(@Req() request: RequestWithUser) {
     const user = request.user;

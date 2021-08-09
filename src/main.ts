@@ -13,7 +13,6 @@ async function bootstrap() {
     .setTitle('Musics API')
     .setDescription('Musics platform API')
     .setVersion('1.0')
-    .addTag('musics')
     .addCookieAuth('Authorization')
     .build()
   const document = SwaggerModule.createDocument(app, options);

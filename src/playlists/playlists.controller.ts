@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } fro
 import { PlaylistsService } from './playlists.service';
 import { CreatePlaylistDto } from './dto/create-playlist.dto';
 import { UpdatePlaylistDto } from './dto/update-playlist.dto';
-import JwtAuthenticationGuard from '../authentication/jwt-authentication.guard';
+import JwtAuthenticationGuard from '../authentication/guards/jwt-authentication.guard';
 import RequestWithUser from '../authentication/requestWithUser.interface';
 import { MusicDto } from './dto/music.dto';
 import {

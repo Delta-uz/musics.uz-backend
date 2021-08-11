@@ -13,8 +13,8 @@ import {
 import { AuthenticationService } from './authentication.service';
 import { RegisterDto } from './dto/register.dto';
 import RequestWithUser from './requestWithUser.interface';
-import { LocalAuthenticationGuard } from './localAuthentication.guard';
-import JwtAuthenticationGuard from './jwt-authentication.guard';
+import { LocalAuthenticationGuard } from './guards/localAuthentication.guard';
+import JwtAuthenticationGuard from './guards/jwt-authentication.guard';
 import { UsersService } from '../users/users.service';
 import { EmailConfirmationService } from '../emailConfirmation/emailConfirmation.service';
 import {

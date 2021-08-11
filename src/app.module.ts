@@ -47,7 +47,8 @@ import { EmailConfirmationModule } from './emailConfirmation/emailConfirmation.m
     FilesModule,
     CategoriesModule,
     EmailConfirmationModule,
-    PasswordRecoveryModule
+    PasswordRecoveryModule,
+    UsersModule
   ]
 })
 export class AppModule {}

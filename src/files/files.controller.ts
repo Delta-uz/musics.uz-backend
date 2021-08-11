@@ -18,13 +18,14 @@ import {
   ApiBadRequestResponse,
   ApiBody,
   ApiConsumes, ApiCookieAuth,
-  ApiCreatedResponse, ApiNotFoundResponse,
+  ApiCreatedResponse, ApiForbiddenResponse, ApiNotFoundResponse,
   ApiOkResponse,
   ApiResponse,
   ApiTags, ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { FileUploadDto } from './dto/file-upload.dto';
-import JwtAuthenticationGuard from '../authentication/jwt-authentication.guard';
+import JwtAuthenticationGuard from '../authentication/guards/jwt-authentication.guard';
+import { AdminGuard } from '../authentication/guards/admin.guard';
 
 @ApiTags('files')
 @Controller('files')
@@ -34,7 +35,7 @@ export class FilesController {
   ) {}
 
   @Post()
-  @UseGuards(JwtAuthenticationGuard)
+  @UseGuards(JwtAuthenticationGuard, AdminGuard)
   @UseInterceptors(FileInterceptor('file', {
     storage: diskStorage({
       destination: './public/uploads',
@@ -61,6 +62,9 @@ export class FilesController {
   @ApiCookieAuth()
   @ApiUnauthorizedResponse({
     description: 'User must be authenticated'
+  })
+  @ApiForbiddenResponse({
+    description: 'You do not have permission to access this source'
   })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
@@ -97,10 +101,13 @@ export class FilesController {
   }
 
   @Delete(':filename')
-  @UseGuards(JwtAuthenticationGuard)
+  @UseGuards(JwtAuthenticationGuard, AdminGuard)
   @ApiCookieAuth()
   @ApiUnauthorizedResponse({
     description: 'User must be authenticated'
+  })
+  @ApiForbiddenResponse({
+    description: 'You do not have permission to access this source'
   })
   @ApiOkResponse({
     description: 'File has been deleted'

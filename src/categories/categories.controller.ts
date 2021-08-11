@@ -4,13 +4,13 @@ import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import {
   ApiBadRequestResponse, ApiCookieAuth,
-  ApiCreatedResponse,
+  ApiCreatedResponse, ApiForbiddenResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
-  ApiResponse,
   ApiTags, ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import JwtAuthenticationGuard from '../authentication/jwt-authentication.guard';
+import JwtAuthenticationGuard from '../authentication/guards/jwt-authentication.guard';
+import { AdminGuard } from '../authentication/guards/admin.guard';
 
 @ApiTags('categories')
 @Controller('categories')
@@ -18,7 +18,7 @@ export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 
   @Post()
-  @UseGuards(JwtAuthenticationGuard)
+  @UseGuards(JwtAuthenticationGuard, AdminGuard)
   @ApiCookieAuth()
   @ApiUnauthorizedResponse({
     description: 'User must be authenticated'
@@ -28,6 +28,9 @@ export class CategoriesController {
   })
   @ApiBadRequestResponse({
     description: `Data doesn't match the schema`
+  })
+  @ApiForbiddenResponse({
+    description: 'You do not have permission to access this source'
   })
   create(@Body() createCategoryDto: CreateCategoryDto) {
     return this.categoriesService.create(createCategoryDto);
@@ -53,10 +56,13 @@ export class CategoriesController {
   }
 
   @Patch(':id')
-  @UseGuards(JwtAuthenticationGuard)
+  @UseGuards(JwtAuthenticationGuard, AdminGuard)
   @ApiCookieAuth()
   @ApiUnauthorizedResponse({
     description: 'User must be authenticated'
+  })
+  @ApiForbiddenResponse({
+    description: 'You do not have permission to access this source'
   })
   @ApiOkResponse({
     description: 'Category has been updated'
@@ -72,10 +78,13 @@ export class CategoriesController {
   }
 
   @Delete(':id')
-  @UseGuards(JwtAuthenticationGuard)
+  @UseGuards(JwtAuthenticationGuard, AdminGuard)
   @ApiCookieAuth()
   @ApiUnauthorizedResponse({
     description: 'User must be authenticated'
+  })
+  @ApiForbiddenResponse({
+    description: 'You do not have permission to access this source'
   })
   @ApiOkResponse({
     description: 'Category has been deleted'

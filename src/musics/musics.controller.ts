@@ -13,7 +13,7 @@ import {
 import { MusicsService } from './musics.service';
 import { CreateMusicDto } from './dto/create-music.dto';
 import { UpdateMusicDto } from './dto/update-music.dto';
-import JwtAuthenticationGuard from '../authentication/jwt-authentication.guard';
+import JwtAuthenticationGuard from '../authentication/guards/jwt-authentication.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Express } from 'express';
 import { diskStorage } from 'multer';
@@ -21,11 +21,12 @@ import { extname } from 'path';
 import { AddCategoryDto } from './dto/add-category.dto';
 import {
   ApiBadRequestResponse, ApiCookieAuth,
-  ApiCreatedResponse,
+  ApiCreatedResponse, ApiForbiddenResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiTags, ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { AdminGuard } from '../authentication/guards/admin.guard';
 
 @ApiTags('musics')
 @Controller('musics')
@@ -33,10 +34,13 @@ export class MusicsController {
   constructor(private readonly musicsService: MusicsService) {}
 
   @Post()
-  @UseGuards(JwtAuthenticationGuard)
+  @UseGuards(JwtAuthenticationGuard, AdminGuard)
   @ApiCookieAuth()
   @ApiUnauthorizedResponse({
     description: 'User must be authenticated'
+  })
+  @ApiForbiddenResponse({
+    description: 'You do not have permission to access this source'
   })
   @ApiCreatedResponse({
     description: 'The music has been successfully created.'
@@ -49,10 +53,13 @@ export class MusicsController {
   }
 
   @Post(':id/category')
-  @UseGuards(JwtAuthenticationGuard)
+  @UseGuards(JwtAuthenticationGuard, AdminGuard)
   @ApiCookieAuth()
   @ApiUnauthorizedResponse({
     description: 'User must be authenticated'
+  })
+  @ApiForbiddenResponse({
+    description: 'You do not have permission to access this source'
   })
   @ApiOkResponse({
     description: 'The category has been successfully added.'
@@ -82,10 +89,13 @@ export class MusicsController {
   }
 
   @Patch(':id')
-  @UseGuards(JwtAuthenticationGuard)
+  @UseGuards(JwtAuthenticationGuard, AdminGuard)
   @ApiCookieAuth()
   @ApiUnauthorizedResponse({
     description: 'User must be authenticated'
+  })
+  @ApiForbiddenResponse({
+    description: 'You do not have permission to access this source'
   })
   @ApiOkResponse({
     description: 'Music has been updated successfully'
@@ -101,10 +111,13 @@ export class MusicsController {
   }
 
   @Delete(':id')
-  @UseGuards(JwtAuthenticationGuard)
+  @UseGuards(JwtAuthenticationGuard, AdminGuard)
   @ApiCookieAuth()
   @ApiUnauthorizedResponse({
     description: 'User must be authenticated'
+  })
+  @ApiForbiddenResponse({
+    description: 'You do not have permission to access this source'
   })
   @ApiOkResponse({
     description: `Music has been deleted`

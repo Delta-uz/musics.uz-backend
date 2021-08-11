@@ -44,7 +44,17 @@ export class UsersService {
 
   async updatePassword(email: string, newPassword) {
     const user = await this.usersRepository.findOne({ email });
+    if(!user)
+      throw new NotFoundException('Unable to find user with that email');
     user.password = newPassword;
+    return await this.usersRepository.save(user);
+  }
+
+  async makeAdmin(id: number) {
+    const user = await this.usersRepository.findOne(id);
+    if(!user)
+      throw new NotFoundException('Unable to find user with that email');
+    user.isAdmin = true;
     return await this.usersRepository.save(user);
   }
 }

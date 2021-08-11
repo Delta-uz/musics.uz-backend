@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { BeforeInsert, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import { Playlist } from '../../playlists/entities/playlist.entity';
 
@@ -18,8 +18,16 @@ export class User {
   public password: string;
 
   @Column({ default: false })
+  public isAdmin?: boolean;
+
+  @Column({ default: false })
   public isEmailConfirmed: boolean;
 
   @OneToMany((type) => Playlist, playlist => playlist.owner)
   public playlists: Playlist[]
+
+  @BeforeInsert()
+  emailToLowerCase() {
+    this.email = this.email.toLowerCase()
+  }
 }

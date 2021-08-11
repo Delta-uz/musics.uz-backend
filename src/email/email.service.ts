@@ -12,11 +12,15 @@ export default class EmailService {
       auth: {
         user: configService.get('EMAIL_USER'),
         pass: configService.get('EMAIL_PASSWORD')
-      }
+      },
+      name: 'delta.uz'
     });
   }
 
   sendMail(options: Mail.Options) {
-    return this.nodemailerTransport.sendMail(options);
+    return this.nodemailerTransport.sendMail({
+      ...options,
+      from: `"Musics.uz" <${this.configService.get('EMAIL_USER')}>`
+    });
   }
 }

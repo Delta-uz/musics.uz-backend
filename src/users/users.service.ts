@@ -1,9 +1,8 @@
 import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
+import { RegisterDto } from '../authentication/dto/register.dto';
 
 @Injectable()
 export class UsersService {
@@ -29,7 +28,7 @@ export class UsersService {
     throw new HttpException('User with this email does not exist', HttpStatus.NOT_FOUND);
   }
 
-  async create(userData: CreateUserDto): Promise<User> {
+  async create(userData: RegisterDto): Promise<User> {
     const newUser = await this.usersRepository.create(userData);
     await this.usersRepository.save(newUser);
     newUser.password = undefined;

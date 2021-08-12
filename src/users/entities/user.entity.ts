@@ -13,6 +13,9 @@ export class User {
   @Column()
   public name: string;
 
+  @Column({ nullable: true })
+  public surname?: string;
+
   @Column()
   @Exclude()
   public password: string;

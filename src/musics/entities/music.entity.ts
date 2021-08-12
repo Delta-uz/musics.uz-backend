@@ -1,6 +1,16 @@
-import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { File } from '../../files/entities/file.entity';
 import { Category } from '../../categories/entities/category.entity';
+import { Artist } from '../../artists/entities/artist.entity';
 
 @Entity()
 export class Music {
@@ -19,4 +29,7 @@ export class Music {
   @ManyToMany((type) => Category, (category: Category) => category.musics)
   @JoinTable()
   public categories: Category[]
+
+  @ManyToOne((type) => Artist, artist => artist.musics)
+  public author: Artist;
 }

@@ -12,6 +12,7 @@ import { join } from 'path';
 import { CategoriesModule } from './categories/categories.module';
 import { PasswordRecoveryModule } from './password-recovery/password-recovery.module';
 import { EmailConfirmationModule } from './emailConfirmation/emailConfirmation.module';
+import { ArtistsModule } from './artists/artists.module';
 
 @Module({
   imports: [
@@ -48,7 +49,8 @@ import { EmailConfirmationModule } from './emailConfirmation/emailConfirmation.m
     CategoriesModule,
     EmailConfirmationModule,
     PasswordRecoveryModule,
-    UsersModule
+    UsersModule,
+    ArtistsModule
   ]
 })
 export class AppModule {}

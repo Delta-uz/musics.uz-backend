@@ -8,13 +8,5 @@ export class CreateFileDto {
   })
   @IsString()
   @IsNotEmpty()
-  filename: string;
-
-  @ApiProperty({
-    required: false,
-    description: 'Automatically generated unique filename'
-  })
-  @IsString()
-  @IsNotEmpty()
-  filepath: string;
+  name: string;
 }

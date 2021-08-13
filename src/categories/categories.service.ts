@@ -28,10 +28,6 @@ export class CategoriesService {
     throw new NotFoundException();
   }
 
-  addMusic(id: number, addMusicDto) {
-
-  }
-
   async update(id: number, updateCategoryDto: UpdateCategoryDto): Promise<Category> {
     const result: UpdateResult = await this.categoriesRepository.update(id, updateCategoryDto);
     if (result.affected) {

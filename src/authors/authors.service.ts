@@ -1,29 +1,28 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { CreateArtistDto } from './dto/create-artist.dto';
-import { UpdateArtistDto } from './dto/update-artist.dto';
+import { CreateAuthorDto } from './dto/create-author.dto';
+import { UpdateAuthorDto } from './dto/update-author.dto';
 import { Repository } from 'typeorm';
-import { Artist } from './entities/artist.entity';
-import { Music } from '../musics/entities/music.entity';
+import { Author } from './entities/author.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
-export class ArtistsService {
+export class AuthorsService {
   constructor(
-    @InjectRepository(Artist)
-    private readonly artistRepository: Repository<Artist>
+    @InjectRepository(Author)
+    private readonly artistRepository: Repository<Author>
   ) {
   }
 
-  create(createArtistDto: CreateArtistDto): Promise<Artist> {
+  create(createArtistDto: CreateAuthorDto): Promise<Author> {
     const artist = this.artistRepository.create(createArtistDto);
     return this.artistRepository.save(artist);
   }
 
-  findAll(): Promise<Artist[]> {
+  findAll(): Promise<Author[]> {
     return this.artistRepository.find();
   }
 
-  async findOne(id: number): Promise<Artist> {
+  async findOne(id: number): Promise<Author> {
     const artist = await this.artistRepository.findOne(id, { relations: ['musics'] });
     if(artist) {
       return artist;
@@ -31,7 +30,7 @@ export class ArtistsService {
     throw new NotFoundException('Unable to find that artist');
   }
 
-  async update(id: number, updateArtistDto: UpdateArtistDto): Promise<Artist> {
+  async update(id: number, updateArtistDto: UpdateAuthorDto): Promise<Author> {
     const artist = await this.artistRepository.findOne(id);
     if (!artist) {
       throw new NotFoundException('Unable to find that artist');

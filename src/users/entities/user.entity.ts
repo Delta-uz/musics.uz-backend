@@ -1,6 +1,7 @@
-import { BeforeInsert, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { BeforeInsert, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import { Playlist } from '../../playlists/entities/playlist.entity';
+import { Like } from '../../musics/entities/like.entity';
 
 @Entity()
 export class User {
@@ -11,10 +12,7 @@ export class User {
   public email: string;
 
   @Column()
-  public name: string;
-
-  @Column({ nullable: true })
-  public surname?: string;
+  public fullName: string;
 
   @Column()
   @Exclude()
@@ -26,8 +24,14 @@ export class User {
   @Column({ default: false })
   public isEmailConfirmed: boolean;
 
-  @OneToMany((type) => Playlist, playlist => playlist.owner)
+  @OneToMany((type) => Playlist, playlist => playlist.user)
   public playlists: Playlist[]
+
+  @OneToMany((type) => Like, like => like.user)
+  public likes: Like[];
+
+  @CreateDateColumn()
+  createdAt: Date;
 
   @BeforeInsert()
   emailToLowerCase() {

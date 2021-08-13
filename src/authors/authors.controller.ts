@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
-import { ArtistsService } from './artists.service';
-import { CreateArtistDto } from './dto/create-artist.dto';
-import { UpdateArtistDto } from './dto/update-artist.dto';
+import { AuthorsService } from './authors.service';
+import { CreateAuthorDto } from './dto/create-author.dto';
+import { UpdateAuthorDto } from './dto/update-author.dto';
 import {
   ApiBadRequestResponse,
   ApiCreatedResponse,
@@ -12,10 +12,10 @@ import {
 import JwtAuthenticationGuard from '../authentication/guards/jwt-authentication.guard';
 import { AdminGuard } from '../authentication/guards/admin.guard';
 
-@ApiTags('artists')
-@Controller('artists')
-export class ArtistsController {
-  constructor(private readonly artistsService: ArtistsService) {}
+@ApiTags('authors')
+@Controller('authors')
+export class AuthorsController {
+  constructor(private readonly artistsService: AuthorsService) {}
 
   @Post()
   @UseGuards(JwtAuthenticationGuard, AdminGuard)
@@ -31,7 +31,7 @@ export class ArtistsController {
   @ApiBadRequestResponse({
     description: 'Data does not match the schema'
   })
-  create(@Body() createArtistDto: CreateArtistDto) {
+  create(@Body() createArtistDto: CreateAuthorDto) {
     return this.artistsService.create(createArtistDto);
   }
 
@@ -71,7 +71,7 @@ export class ArtistsController {
   @ApiBadRequestResponse({
     description: 'Data does not match the schema'
   })
-  update(@Param('id') id: string, @Body() updateArtistDto: UpdateArtistDto) {
+  update(@Param('id') id: string, @Body() updateArtistDto: UpdateAuthorDto) {
     return this.artistsService.update(+id, updateArtistDto);
   }
 

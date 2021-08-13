@@ -7,5 +7,12 @@ export class UpdateCategoryDto {
   })
   @IsString()
   @IsNotEmpty()
-  title: string;
+  name: string;
+
+  @ApiProperty({
+    description: 'Cover image of the category'
+  })
+  @IsString()
+  @IsOptional()
+  image?: string;
 }

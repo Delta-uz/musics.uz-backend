@@ -7,43 +7,53 @@ import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { FilesService } from '../files/files.service';
 import { CategoriesService } from '../categories/categories.service';
 import { AddCategoryDto } from './dto/add-category.dto';
-import { ArtistsService } from '../artists/artists.service';
+import { AuthorsService } from '../authors/authors.service';
+import { Like } from './entities/like.entity';
+import { LikeDto } from './dto/like.dto';
+import { UsersService } from '../users/users.service';
+import { User } from '../users/entities/user.entity';
 
 @Injectable()
 export class MusicsService {
   constructor(
     @InjectRepository(Music)
     private readonly musicsRepository: Repository<Music>,
+    @InjectRepository(Like)
+    private readonly likesRepository: Repository<Like>,
     private readonly filesService: FilesService,
     private readonly categoriesService: CategoriesService,
-    private readonly artistsService: ArtistsService
+    private readonly authorsService: AuthorsService
   ) {}
 
   async create(createMusicDto: CreateMusicDto): Promise<Music> {
-    const file = await this.filesService.findOne(createMusicDto.filename);
+    const file = await this.filesService.findOne(createMusicDto.file);
+    let authors = [];
+    for (let id of createMusicDto.authors) {
+      const author = await this.authorsService.findOne(id);
+      authors.push(author);
+    }
     const music = await this.musicsRepository.create({
-      title: createMusicDto.title,
+      ...createMusicDto,
+      authors,
       file
     });
-    const author = await this.artistsService.findOne(createMusicDto.author);
-    music.author = author;
     return await this.musicsRepository.save(music);
   }
 
   async findAll(): Promise<Music[]> {
-    return await this.musicsRepository.find({ relations: ['author'] });
+    return await this.musicsRepository.find({ relations: ['authors'] });
   }
 
   async findOne(id: number): Promise<Music> {
-    const music: Music = await this.musicsRepository.findOne(id, { relations: ['categories', 'author'] });
+    const music: Music = await this.musicsRepository.findOne(id, { relations: ['categories', 'authors'] });
     if(music) {
       return music;
     }
     throw new NotFoundException();
   }
 
-  async update(id: number, { title }: UpdateMusicDto): Promise<Music> {
-    const result = await this.musicsRepository.update(id,{ title });
+  async update(id: number, { name }: UpdateMusicDto): Promise<Music> {
+    const result = await this.musicsRepository.update(id,{ name });
     if(result.affected) {
       return await this.findOne(id);
     }
@@ -61,6 +71,26 @@ export class MusicsService {
     const music = await this.findOne(id);
     const category = await this.categoriesService.findOne(addCategoryDto.categoryId);
     music.categories.push(category);
-    return this.musicsRepository.save(music);
+    await this.musicsRepository.save(music);
+    return music;
+  }
+
+  async likeMusic(id: number, user: User, likeDto: LikeDto): Promise<Like> {
+    const music = await this.findOne(id);
+    const like = await this.likesRepository.create({
+      ...likeDto,
+      music,
+      user
+    });
+    return this.likesRepository.save(like);
+  }
+
+  async allLikes(id: number) {
+    const music = await this.musicsRepository.findOne(id, { relations: ['likes'] });
+    if(music) {
+      music.likes.forEach((like) => like.user.password = undefined);
+      return music.likes;
+    }
+    throw new NotFoundException();
   }
 }

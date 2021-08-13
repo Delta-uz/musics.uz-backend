@@ -1,16 +1,17 @@
 import {
-  Column,
+  Column, CreateDateColumn,
   Entity,
   JoinColumn,
   JoinTable,
   ManyToMany,
-  ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { File } from '../../files/entities/file.entity';
 import { Category } from '../../categories/entities/category.entity';
-import { Artist } from '../../artists/entities/artist.entity';
+import { Author } from '../../authors/entities/author.entity';
+import { Like } from './like.entity';
 
 @Entity()
 export class Music {
@@ -18,7 +19,7 @@ export class Music {
   public id: number;
 
   @Column()
-  public title: string;
+  public name: string;
 
   @OneToOne((type) => File, file => file.music, {
     eager: true
@@ -26,10 +27,32 @@ export class Music {
   @JoinColumn()
   public file: File
 
-  @ManyToMany((type) => Category, (category: Category) => category.musics)
-  @JoinTable()
-  public categories: Category[]
+  @Column({
+    nullable: true
+  })
+  public image?: string;
 
-  @ManyToOne((type) => Artist, artist => artist.musics)
-  public author: Artist;
+  @Column({
+    default: 0
+  })
+  public likes_count: number;
+
+  @Column({
+    default: 0
+  })
+  public listens_count: number;
+
+  @ManyToMany(type => Category, category => category.musics)
+  @JoinTable()
+  public categories: Category[];
+
+  @ManyToMany((type) => Author, (author: Author) => author.musics)
+  @JoinTable()
+  public authors: Author[];
+
+  @OneToMany(() => Like, like => like.music)
+  public likes: Like[]
+
+  @CreateDateColumn()
+  upload_date: Date;
 }

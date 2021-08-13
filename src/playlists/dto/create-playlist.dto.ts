@@ -1,11 +1,18 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreatePlaylistDto {
   @IsString()
   @IsNotEmpty()
   @ApiProperty({
-    description: 'Title of the new playlist'
+    description: 'Name of the playlist'
   })
-  title: string;
+  name: string;
+
+  @IsString()
+  @IsOptional()
+  @ApiProperty({
+    description: 'Cover image of the playlist'
+  })
+  image?: string;
 }

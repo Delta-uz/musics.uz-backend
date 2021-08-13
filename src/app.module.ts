@@ -12,7 +12,7 @@ import { join } from 'path';
 import { CategoriesModule } from './categories/categories.module';
 import { PasswordRecoveryModule } from './password-recovery/password-recovery.module';
 import { EmailConfirmationModule } from './emailConfirmation/emailConfirmation.module';
-import { ArtistsModule } from './artists/artists.module';
+import { AuthorsModule } from './authors/authors.module';
 
 @Module({
   imports: [
@@ -50,7 +50,7 @@ import { ArtistsModule } from './artists/artists.module';
     EmailConfirmationModule,
     PasswordRecoveryModule,
     UsersModule,
-    ArtistsModule
+    AuthorsModule
   ]
 })
 export class AppModule {}

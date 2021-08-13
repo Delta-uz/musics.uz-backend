@@ -14,10 +14,7 @@ export class FilesService {
   ) {}
 
   async create(createFileDto: CreateFileDto): Promise<File> {
-    const file: File = this.fileRepository.create({
-      ...createFileDto,
-      filepath: join(this.configService.get("UPLOADS_PATH"), createFileDto.filepath)
-    });
+    const file: File = this.fileRepository.create(createFileDto);
     return this.fileRepository.save(file);
   }
 

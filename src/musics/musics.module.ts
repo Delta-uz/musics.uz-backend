@@ -5,14 +5,16 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Music } from './entities/music.entity';
 import { FilesModule } from '../files/files.module';
 import { CategoriesModule } from '../categories/categories.module';
-import { ArtistsModule } from '../artists/artists.module';
+import { AuthorsModule } from '../authors/authors.module';
+import { Like } from './entities/like.entity';
+import { UsersModule } from '../users/users.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Music]),
+    TypeOrmModule.forFeature([Music, Like]),
     FilesModule,
     CategoriesModule,
-    ArtistsModule
+    AuthorsModule
   ],
   controllers: [MusicsController],
   providers: [MusicsService],

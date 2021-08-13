@@ -43,8 +43,7 @@ export class FilesController {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
         const filename = file.fieldname + "_" + uniqueSuffix;
         const filepath = filename + extname(file.originalname).toLowerCase()
-        req.body.filename = filename;
-        req.body.filepath = filepath;
+        req.body.name = filename;
         cb(null, filepath);
       }
     }),

@@ -6,7 +6,10 @@ import { Category } from './entities/category.entity';
 import { UsersModule } from '../users/users.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Category]), UsersModule],
+  imports: [
+    TypeOrmModule.forFeature([Category]),
+    UsersModule
+  ],
   controllers: [CategoriesController],
   providers: [CategoriesService],
   exports: [CategoriesService]

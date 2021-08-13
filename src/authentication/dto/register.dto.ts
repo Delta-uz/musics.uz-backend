@@ -10,18 +10,11 @@ export class RegisterDto {
   email: string;
 
   @ApiProperty({
-    description: "User's name"
+    description: "User's full name"
   })
   @IsString()
   @IsNotEmpty()
-  name: string;
-
-  @ApiProperty({
-    description: "User's surname"
-  })
-  @IsString()
-  @IsOptional()
-  surname?: string;
+  fullName: string;
 
   @ApiProperty({
     description: 'Registration password'

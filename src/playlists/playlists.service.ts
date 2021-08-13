@@ -18,18 +18,18 @@ export class PlaylistsService {
   ) {}
 
   async create(createPlaylistDto: CreatePlaylistDto, user: User): Promise<Playlist> {
-    const owner = await this.usersService.getByEmail(user.email)
+    // const owner = await this.usersService.getByEmail(user.email)
     const newPlaylist = this.playlistsRepository.create({
-      owner,
+      user,
       ...createPlaylistDto
     });
     return this.playlistsRepository.save(newPlaylist);
   }
 
   async findOne(id: number) {
-    const playlist = await this.playlistsRepository.findOne(id, { relations: ['owner'] });
+    const playlist = await this.playlistsRepository.findOne(id, { relations: ['user'] });
     if (playlist) {
-      playlist.owner.password = undefined;
+      playlist.user.password = undefined;
       return playlist;
     }
     throw new NotFoundException();
@@ -68,10 +68,10 @@ export class PlaylistsService {
   }
 
   async update(id: number, updatePlaylistDto: UpdatePlaylistDto): Promise<Playlist> {
-    const result: UpdateResult = await this.playlistsRepository.update(id, { title: updatePlaylistDto.title });
+    const result: UpdateResult = await this.playlistsRepository.update(id, { name: updatePlaylistDto.name });
     if(result.affected) {
       const playlist = await this.playlistsRepository.findOne(id, { relations: ['owner'] });
-      playlist.owner.password = undefined;
+      playlist.user.password = undefined;
       return playlist;
     }
     throw new NotFoundException();

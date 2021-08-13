@@ -4,10 +4,7 @@ import { Music } from '../../musics/entities/music.entity';
 @Entity()
 export class File {
   @PrimaryColumn()
-  filename: string;
-
-  @Column({ unique: true })
-  filepath: string;
+  name: string;
 
   @OneToOne((type) => Music, music => music.file)
   music?: Music;

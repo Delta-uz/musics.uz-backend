@@ -9,7 +9,7 @@ export class UpdateMusicDto {
   @ApiProperty({
     minLength: 3
   })
-  title: string;
+  name: string;
 
   @IsEmpty()
   file?: undefined;

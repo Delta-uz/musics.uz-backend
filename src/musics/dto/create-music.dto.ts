@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsNumberString, IsString, MinLength } from 'class-validator';
+import { IsArray, IsNotEmpty, IsNumber, IsNumberString, IsString, MinLength } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateMusicDto {
@@ -9,19 +9,19 @@ export class CreateMusicDto {
     minLength: 3,
     description: 'New music title'
   })
-  title: string;
+  name: string;
 
   @IsString()
   @IsNotEmpty()
   @ApiProperty({
     description: 'filename of the uploaded music'
   })
-  filename: string;
+  file: string;
 
-  @IsNumber()
+  @IsArray()
   @IsNotEmpty()
   @ApiProperty({
-    description: 'ID of the author artist'
+    description: "Array of authors' ID"
   })
-  author: number;
+  authors: number[];
 }

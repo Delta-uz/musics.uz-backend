@@ -9,7 +9,10 @@ export class User {
   public id?: number;
 
   @Column({ unique: true })
-  public email: string;
+  public email?: string;
+
+  @Column({ unique: true })
+  public phone?: string;
 
   @Column()
   public fullName: string;
@@ -22,7 +25,7 @@ export class User {
   public isAdmin?: boolean;
 
   @Column({ default: false })
-  public isEmailConfirmed: boolean;
+  public isEmailConfirmed?: boolean;
 
   @OneToMany((type) => Playlist, playlist => playlist.user)
   public playlists: Playlist[]

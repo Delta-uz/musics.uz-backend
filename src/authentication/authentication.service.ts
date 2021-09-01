@@ -25,15 +25,15 @@ export class AuthenticationService {
       return createdUser;
     } catch (error) {
       if(error?.code === PostgresErrorCode.UniqueViolation) {
-        throw new HttpException('User with that email already exists', HttpStatus.BAD_REQUEST);
+        throw new HttpException('User with that email or phone already exists', HttpStatus.BAD_REQUEST);
       }
       throw new HttpException('Something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
-  public async getAuthenticatedUser(email: string, plainTextPassword: string) {
+  public async getAuthenticatedUser(data: string, plainTextPassword: string) {
     try {
-      const user = await this.usersService.getByEmail(email);
+      let user = await this.usersService.getByEmailOrPhone(data);
       await this.verifyPassword(plainTextPassword, user.password);
       return user;
     } catch (error) {

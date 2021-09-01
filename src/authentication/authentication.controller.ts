@@ -28,13 +28,13 @@ import { LoginDto } from './dto/login.dto';
 
 @ApiTags('authentication')
 @Controller('authentication')
-@UseInterceptors(ClassSerializerInterceptor )
+@UseInterceptors(ClassSerializerInterceptor)
 export class AuthenticationController {
   constructor(
     private readonly authenticationService: AuthenticationService,
     private readonly usersService: UsersService,
     private readonly emailConfirmationService: EmailConfirmationService
-  ) {}
+  ) { }
 
   @Post('register')
   @ApiCreatedResponse({
@@ -44,8 +44,10 @@ export class AuthenticationController {
     description: 'Registration data does not match the requirements'
   })
   async register(@Body() registrationData: RegisterDto) {
-    const user = this.authenticationService.register(registrationData);
-    await this.emailConfirmationService.sendVerificationLink(registrationData.email);
+    const user = await this.authenticationService.register(registrationData);
+    if (user.email) {
+      await this.emailConfirmationService.sendVerificationLink(user.email);
+    }
     return user;
   }
 

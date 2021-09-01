@@ -30,7 +30,7 @@ export class EmailConfirmationService {
   }
 
   public async confirmEmail(email: string) {
-    const user = await this.usersService.getByEmail(email);
+    const user = await this.usersService.getByEmailOrPhone(email);
     if (user.isEmailConfirmed) {
       throw new BadRequestException('Email is already confirmed');
     }

@@ -20,12 +20,15 @@ export class UsersService {
     throw new HttpException('User with this is does not exist', HttpStatus.NOT_FOUND);
   }
 
-  async getByEmail(email: string): Promise<User> {
-    const user = await this.usersRepository.findOne({ email });
+  async getByEmailOrPhone(data: string): Promise<User> {
+    let user = await this.usersRepository.findOne({ email: data });
+    if (!user) {
+      user = await this.usersRepository.findOne({ phone: data });
+    }
     if (user) {
       return user;
     }
-    throw new HttpException('User with this email does not exist', HttpStatus.NOT_FOUND);
+    throw new HttpException('User with this email or phone does not exist', HttpStatus.NOT_FOUND);
   }
 
   async create(userData: RegisterDto): Promise<User> {

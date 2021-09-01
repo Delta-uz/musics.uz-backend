@@ -8,10 +8,10 @@ export class User {
   @PrimaryGeneratedColumn()
   public id?: number;
 
-  @Column({ unique: true })
+  @Column({ unique: true, nullable: true })
   public email?: string;
 
-  @Column({ unique: true })
+  @Column({ unique: true, nullable: true })
   public phone?: string;
 
   @Column()

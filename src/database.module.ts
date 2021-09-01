@@ -16,7 +16,7 @@ import CustomNamingStrategy from './database/CustomNamingStrategy';
         port: configService.get('MYSQL_PORT'),
         username: configService.get('MYSQL_USER'),
         password: configService.get('MYSQL_PASSWORD'),
-        database: configService.get('MYSQL_DB'),
+        database: configService.get('MYSQL_DATABASE'),
         entities: [
           join(__dirname, '**', '*.entity.{ts,js}')
         ],

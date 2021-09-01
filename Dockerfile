@@ -1,13 +1,13 @@
-FROM node:14
+FROM node:latest
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm install
+RUN npm ci
 
-COPY . .
+COPY .eslintrc.js nest-clie.json tsconfig.json tsconfig.build.json ./
 
-EXPOSE 8080
+COPY docker.env /app/.env
 
-CMD [ "npm", "start" ]
+CMD ["npm", "run", "start"]

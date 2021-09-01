@@ -3,18 +3,11 @@ import { IsEmail, IsNotEmpty, IsOptional, IsPhoneNumber, IsString, MinLength } f
 
 export class LoginDto {
   @ApiProperty({
-    description: 'Email of the user (required if phone is not set)'
+    description: 'Email or phone of the user'
   })
-  @IsEmail()
-  @IsOptional()
-  email: string;
-
-  @ApiProperty({
-    description: 'Phone number of the user (requried if email is not set)'
-  })
-  @IsPhoneNumber()
-  @IsOptional()
-  phone: string;
+  @IsString()
+  @IsNotEmpty()
+  username: string;
 
   @ApiProperty({
     description: 'Password of the user',
